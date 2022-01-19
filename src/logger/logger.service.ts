@@ -1,10 +1,10 @@
 import { Logger } from 'tslog';
 
 export class LoggerService {
-  private logger: Logger;
+  private readonly _logger: Logger;
 
   constructor() {
-    this.logger = new Logger({
+    this._logger = new Logger({
       displayInstanceName: false,
       displayLoggerName: false,
       displayFilePath: 'hidden',
@@ -13,14 +13,14 @@ export class LoggerService {
   };
 
   public log(...args: unknown[]) {
-    this.logger.info(...args);
+    this._logger.info(...args);
   };
 
   public error(...args: unknown[]) {
-    this.logger.error(...args);
+    this._logger.error(...args);
   };
 
   public warn(...args: unknown[]) {
-    this.logger.warn(...args);
+    this._logger.warn(...args);
   };
 };
