@@ -15,20 +15,20 @@ export abstract class BaseController {
     return this._router;
   };
 
-  public created(res: Response) {
+  created(res: Response) {
     return res.sendStatus(201);
   }
 
-  public send<T>(res: Response, code: number, message: T) {
+  send<T>(res: Response, code: number, message: T) {
     res.type('application/json');
     return res.status(code).json(message);
   }
 
-  public success<T>(res: Response, message: T) {
+  success<T>(res: Response, message: T) {
     return this.send<T>(res, 200, message);
   }
 
-  public error<T>(res: Response, message: T) {
+  error<T>(res: Response, message: T) {
     return this.send<T>(res, 500, message);
   }
 

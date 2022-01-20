@@ -1,8 +1,9 @@
-import express, { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 
 import { IRoute } from "../common/IRoute";
 import { BaseController } from '../common/base.controller';
 import { LoggerService } from "../logger/logger.service";
+import { HttpError } from "../errors/http-error";
 
 export class UserController extends BaseController {
   private readonly _routes: IRoute[] = [
@@ -23,11 +24,11 @@ export class UserController extends BaseController {
     this.bindRoutes(this._routes);
   };
 
-  public login(req: Request, res: Response, next: NextFunction) {
-    return this.success(res, 'Login successful!');
+  login(req: Request, res: Response, next: NextFunction) {
+    next(new HttpError(401, 'Authorization error', 'Login'));
   };
 
-  public register(req: Request, res: Response, next: NextFunction) {
-    return this.success(res, 'Register successful!');
+  register(req: Request, res: Response, next: NextFunction) {
+    this.success(res, 'Register successful!');
   };
 };

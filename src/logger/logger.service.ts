@@ -12,15 +12,15 @@ export class LoggerService {
     });
   };
 
-  public log(...args: unknown[]) {
+  log(...args: unknown[]) {
     this._logger.info(...args);
   };
 
-  public error(...args: unknown[]) {
+  error(...args: unknown[]) {
     this._logger.error(...args);
   };
 
-  public warn(...args: unknown[]) {
+  warn(...args: unknown[]) {
     this._logger.warn(...args);
   };
 };
