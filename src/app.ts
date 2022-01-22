@@ -1,25 +1,27 @@
 import express, { Express } from 'express';
+import { inject, injectable } from 'inversify';
 import { Server } from 'http';
+import 'reflect-metadata';
 
+import { TYPES } from './types';
 import { ILogger } from './logger/ILogger';
-import { UserController } from './users/users.controller.js';
-import { LoggerService } from "./logger/logger.service";
-import { ExeptionFilter } from './errors/exeption.filter.js';
+import { IExeptionFilter } from './errors/IExeptionFilter';
 
-export class App {
+import { UserController } from './users/users.controller.js';
+
+@injectable()
+export class App { // добавление сервиса в IoC container
   private readonly _app: Express;
   private readonly _port: number;
-  private readonly _logger: ILogger;
-  private readonly _userController: UserController;
-  private readonly _exeptionFilter: ExeptionFilter;
   server: Server;
 
-  constructor(logger: ILogger, userController: UserController, exeptionFilter: ExeptionFilter) {
+  constructor(
+    @inject(TYPES.ILogger) private _logger: ILogger, // @inject импортирует в конструктор экзмепляр сервиса}
+    @inject(TYPES.IExeptionFilter) private _exeptionFilter: IExeptionFilter,
+    @inject(TYPES.UserController) private _userController: UserController,
+  ) {
     this._app = express();
     this._port = 8000;
-    this._logger = logger;
-    this._userController = userController;
-    this._exeptionFilter = exeptionFilter;
   };
 
   useRoutes() {
@@ -34,6 +36,6 @@ export class App {
     this.useRoutes();
     this.useExeptionFilters();
     this.server = this._app.listen(this._port);
-    this._logger.log(`Сервер запущен на http://localhost:${this._port}`);
+    this._logger.log(`Server starts up on port http://localhost:${this._port}`);
   };
 };

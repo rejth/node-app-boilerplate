@@ -1,33 +1,22 @@
+import { Container } from "inversify";
+
+import { TYPES } from "./types";
+import { ILogger } from "./logger/ILogger";
+import { IExeptionFilter } from "./errors/IExeptionFilter";
+
 import { App } from "./app";
+import { UserController } from './users/users.controller';
 import { ExeptionFilter } from "./errors/exeption.filter";
 import { LoggerService } from "./logger/logger.service";
-import { UserController } from './users/users.controller';
 
-// TODO
-// ! Паттерн:
-// ! DI (внедрение зависимостей - процесс предоставления внешней зависимости программному компоненту)
-// ! DI позволяет избежать инстанциирования (new ()) сервисов в компоненте и использовать передачу извне для упрощения тестирования
+const appContainer = new Container();
 
-// ! Принципы:
-// ! Inversion of Control (инверсия управления) - каждый компонент системы должен быть как можно более изолирован от других, не полагаясь
-// ! в своей работе на другие детали конкретной реализации других компонентов
+appContainer.bind<App>(TYPES.Application).to(App);
+appContainer.bind<UserController>(TYPES.UserController).to(UserController);
+appContainer.bind<IExeptionFilter>(TYPES.IExeptionFilter).to(ExeptionFilter);
+appContainer.bind<ILogger>(TYPES.ILogger).to(LoggerService);
 
-// ! Dependency inversion principle (инверсия зависимостей) - модули верхних уровней не должны зависеть от модулей нижних уровней
-// ! Оба типа модулей зависесть от абстракций. Абстракции не должны зависеть от деталей. Детали должны завистеть от абстракций
-// ! Необходимо завязывать классы не на конкретную реализацию, а на интерфейс
+const app = appContainer.get<App>(TYPES.Application);
+app.init();
 
-// ! Реализация: Inversion of Control Container (IoC Container)
-
-async function bootstrap() {
-  const logger = new LoggerService();
-  const userController = new UserController(logger);
-  const exeptionFilter = new ExeptionFilter(logger);
-
-  // ! app - Composition Root - точка сбора всех зависимостей
-  const app = new App(logger, userController, exeptionFilter); // простейший DI: внедрение в App через конструктор зависимость от другого сервиса
-  await app.init();
-};
-
-bootstrap();
-
-export { bootstrap };
+export { app, appContainer };
