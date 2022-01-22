@@ -5,7 +5,7 @@ function Component(id: number) {
     console.log('run Component');
     target.prototype.id = id;
   };
-};
+}
 
 // декоратор класса
 function Logger() {
@@ -13,7 +13,7 @@ function Logger() {
   return (target: Function) => {
     console.log('run Logger');
   };
-};
+}
 
 // декоратор метода класса
 function Method(
@@ -25,7 +25,7 @@ function Method(
   propertyDescriptror.value = (...args: any[]) => {
     return args[0] * 10;
   }
-};
+}
 
 // декоратор переменной класса
 function Prop(
@@ -48,7 +48,7 @@ function Prop(
     get: getter,
     set: setter,
   })
-};
+}
 
 // декоратор параметра функции
 function Param(
@@ -58,7 +58,7 @@ function Param(
 ) {
   console.log('Param propertyKey: ', propertyKey);
   console.log('Param index: ', index);
-};
+}
 
 // тестируемый класс
 @Logger()
@@ -70,7 +70,7 @@ export class User {
   updateId(@Param newId: number) {
     this.id = newId;
     return this.id;
-  };
+  }
 }
 
 console.log(new User().id);

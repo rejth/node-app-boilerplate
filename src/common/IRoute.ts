@@ -10,4 +10,6 @@ export interface IRoute {
   method: keyof Pick<Router, 'get' | 'post' | 'delete' | 'put'>;
 
   callback: (req: Request, res: Response, next: NextFunction) => void; // колбэк на запрос по роуту
-};
+}
+
+export type ExpressReturnType = Response<any, Record<string, any>>;

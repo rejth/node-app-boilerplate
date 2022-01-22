@@ -7,4 +7,4 @@ export interface IUserController extends BaseController {
   routes: IRoute[];
   login: (req: Request, res: Response, next: NextFunction) => void;
   register: (req: Request, res: Response, next: NextFunction) => void;
-};
+}

@@ -28,13 +28,13 @@ export class UserController extends BaseController implements IUserController {
   constructor(@inject(TYPES.ILogger) logger: ILoggerService) {
     super(logger);
     this.bindRoutes(this.routes);
-  };
+  }
 
-  login(req: Request, res: Response, next: NextFunction) {
+  login(req: Request, res: Response, next: NextFunction): void {
     next(new HttpError(401, 'Authorization error', 'Login'));
-  };
+  }
 
-  register(req: Request, res: Response, next: NextFunction) {
+  register(req: Request, res: Response, next: NextFunction): void {
     this.success(res, 'Register successful!');
-  };
-};
+  }
+}

@@ -21,20 +21,20 @@ export class App { // добавление сервиса в IoC container
   ) {
     this._app = express();
     this._port = 8000;
-  };
+  }
 
-  useRoutes() {
+  useRoutes(): void {
     this._app.use('/users', this._userController.router);
-  };
+  }
 
-  useExeptionFilters() {
+  useExeptionFilters(): void {
     this._app.use(this._exeptionFilter.catch.bind(this._exeptionFilter));
-  };
+  }
 
-  async init() {
+  async init(): Promise<void> {
     this.useRoutes();
     this.useExeptionFilters();
     this.server = this._app.listen(this._port);
     this._logger.log(`Server starts up on port http://localhost:${this._port}`);
-  };
-};
+  }
+}
