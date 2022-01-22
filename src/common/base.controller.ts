@@ -3,7 +3,7 @@ import { Response, Router } from 'express';
 import { IRoute } from "./IRoute";
 import { LoggerService } from "../logger/logger.service";
 
-// Абстрактный класс позволяет только наследование
+// ! Абстрактный класс позволяет только наследование
 export abstract class BaseController {
   private readonly _router: Router;
 

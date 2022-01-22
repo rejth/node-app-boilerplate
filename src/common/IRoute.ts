@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction, Router } from "express";
 
-// Справка:
-// Pick - утилитарный тип, который берет переданные в него значения и создает новый интерфейс на основе другого
+// ! Pick - утилитарный тип, который берет переданные в него значения и создает новый интерфейс на основе другого
 
 export interface IRoute {
   path: string; // например, /login, /register, /home
