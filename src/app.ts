@@ -4,10 +4,9 @@ import { Server } from 'http';
 import 'reflect-metadata';
 
 import { TYPES } from './types';
-import { ILogger } from './logger/ILogger';
+import { ILoggerService } from './logger/ILoggerService';
 import { IExeptionFilter } from './errors/IExeptionFilter';
-
-import { UserController } from './users/users.controller.js';
+import { IUserController } from './users/IUserController';
 
 @injectable()
 export class App { // добавление сервиса в IoC container
@@ -16,9 +15,9 @@ export class App { // добавление сервиса в IoC container
   server: Server;
 
   constructor(
-    @inject(TYPES.ILogger) private _logger: ILogger, // @inject импортирует в конструктор экзмепляр сервиса}
+    @inject(TYPES.ILogger) private _logger: ILoggerService, // @inject импортирует в конструктор экзмепляр сервиса}
     @inject(TYPES.IExeptionFilter) private _exeptionFilter: IExeptionFilter,
-    @inject(TYPES.UserController) private _userController: UserController,
+    @inject(TYPES.IUserController) private _userController: IUserController,
   ) {
     this._app = express();
     this._port = 8000;

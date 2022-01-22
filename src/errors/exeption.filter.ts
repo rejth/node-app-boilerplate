@@ -3,14 +3,14 @@ import { inject, injectable } from "inversify";
 import 'reflect-metadata';
 
 import { TYPES } from "../types";
-import { ILogger } from "../logger/ILogger";
+import { ILoggerService } from "../logger/ILoggerService";
 import { IExeptionFilter } from "./IExeptionFilter";
 
 import { HttpError } from "./http-error";
 
 @injectable()
 export class ExeptionFilter implements IExeptionFilter {
-  constructor(@inject(TYPES.ILogger) private _logger: ILogger) { };
+  constructor(@inject(TYPES.ILogger) private _logger: ILoggerService) { };
 
   catch(err: Error | HttpError, req: Request, res: Response, next: NextFunction) {
     if (err instanceof HttpError) {

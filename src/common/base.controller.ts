@@ -3,13 +3,13 @@ import { injectable } from 'inversify';
 import 'reflect-metadata';
 
 import { IRoute } from "./IRoute";
-import { ILogger } from '../logger/ILogger';
+import { ILoggerService } from '../logger/ILoggerService';
 
 @injectable()
 export abstract class BaseController {
   private readonly _router: Router;
 
-  constructor(private _loggerService: ILogger) {
+  constructor(private _loggerService: ILoggerService) {
     this._router = Router();
   };
 

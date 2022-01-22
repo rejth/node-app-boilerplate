@@ -4,14 +4,15 @@ import 'reflect-metadata';
 
 import { TYPES } from "../types";
 import { IRoute } from "../common/IRoute";
-import { ILogger } from "../logger/ILogger";
+import { ILoggerService } from "../logger/ILoggerService";
+import { IUserController } from "./IUserController";
 
 import { BaseController } from '../common/base.controller';
 import { HttpError } from "../errors/http-error";
 
 @injectable()
-export class UserController extends BaseController {
-  private readonly _routes: IRoute[] = [
+export class UserController extends BaseController implements IUserController {
+  readonly routes: IRoute[] = [
     {
       path: '/login',
       method: 'post',
@@ -24,9 +25,9 @@ export class UserController extends BaseController {
     }
   ];
 
-  constructor(@inject(TYPES.ILogger) logger: ILogger) {
+  constructor(@inject(TYPES.ILogger) logger: ILoggerService) {
     super(logger);
-    this.bindRoutes(this._routes);
+    this.bindRoutes(this.routes);
   };
 
   login(req: Request, res: Response, next: NextFunction) {
