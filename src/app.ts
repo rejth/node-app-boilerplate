@@ -1,12 +1,13 @@
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
 import { Server } from 'http';
+import {json} from 'body-parser';
 import 'reflect-metadata';
 
 import { TYPES } from './types';
 import { ILoggerService } from './logger/ILoggerService';
 import { IExeptionFilter } from './errors/IExeptionFilter';
-import { IUserController } from './users/IUserController';
+import { IUserController } from './users/interfaces/IUserController';
 
 @injectable()
 export class App { // добавление сервиса в IoC container
@@ -23,6 +24,10 @@ export class App { // добавление сервиса в IoC container
     this._port = 8000;
   }
 
+  useMiddleware(): void {
+    this._app.use(json());
+  }
+
   useRoutes(): void {
     this._app.use('/users', this._userController.router);
   }
@@ -32,6 +37,7 @@ export class App { // добавление сервиса в IoC container
   }
 
   async init(): Promise<void> {
+    this.useMiddleware();
     this.useRoutes();
     this.useExeptionFilters();
     this.server = this._app.listen(this._port);

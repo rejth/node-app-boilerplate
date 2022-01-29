@@ -2,7 +2,8 @@ import { Response, Router } from 'express';
 import { injectable } from 'inversify';
 import 'reflect-metadata';
 
-import { ExpressReturnType, IRoute } from "./IRoute";
+import { ExpressReturnType, IControllerRoute } from "./interfaces/IControllerRoute";
+import { IMiddleware } from './interfaces/IMiddleware';
 import { ILoggerService } from '../logger/ILoggerService';
 
 @injectable()
@@ -34,11 +35,17 @@ export abstract class BaseController {
     return this.send<T>(res, 500, message);
   }
 
-  protected bindRoutes(routes: IRoute[]): void {
-    for (const { path, method, callback } of routes) {
-      this._loggerService.log(`[${method.toUpperCase()}] ${path}`);
-      const routeHandler = callback.bind(this);
-      this._router[method](path, routeHandler);
+  protected bindRoutes(routes: IControllerRoute[]): void {
+    for (const route of routes) {
+      this._loggerService.log(`[${route.method.toUpperCase()}] ${route.path}`);
+      const middleware = (route.middlewares || []).map((item: IMiddleware) => item.execute.bind(item))
+      const routeHandler = route.callback.bind(this);
+
+      const pipeline = middleware && middleware.length
+        ? [...middleware, routeHandler]
+        : routeHandler;
+
+      this._router[route.method](route.path, pipeline);
     }
   }
 }
