@@ -4,13 +4,15 @@ import { TYPES } from "./types";
 import { ILoggerService } from "./logger/ILoggerService";
 import { IExeptionFilter } from "./errors/IExeptionFilter";
 import { IUserController } from "./users/interfaces/IUserController";
+import { IUserService } from "./users/interfaces/IUsersService";
+import { IConfigService } from "./config/IConfigService";
 
 import { App } from "./app";
 import { UserController } from './users/users.controller';
 import { ExeptionFilter } from "./errors/exeption.filter";
 import { LoggerService } from "./logger/logger.service";
-import { IUserService } from "./users/interfaces/IUsersService";
 import { UserService } from "./users/users.service";
+import { ConfigService } from "./config/config.service";
 
 export interface IBootstrapReturn {
   appContainer: Container;
@@ -22,7 +24,8 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
   bind<IUserController>(TYPES.IUserController).to(UserController);
   bind<IUserService>(TYPES.IUserService).to(UserService);
   bind<IExeptionFilter>(TYPES.IExeptionFilter).to(ExeptionFilter);
-  bind<ILoggerService>(TYPES.ILogger).to(LoggerService);
+  bind<ILoggerService>(TYPES.ILogger).to(LoggerService).inSingletonScope();
+  bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
 });
 
 async function bootstrap(): Promise<IBootstrapReturn> {

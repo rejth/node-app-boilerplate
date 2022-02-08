@@ -8,6 +8,7 @@ import { TYPES } from './types';
 import { ILoggerService } from './logger/ILoggerService';
 import { IExeptionFilter } from './errors/IExeptionFilter';
 import { IUserController } from './users/interfaces/IUserController';
+import { IConfigService } from './config/IConfigService';
 
 @injectable()
 export class App { // добавление сервиса в IoC container
@@ -19,6 +20,7 @@ export class App { // добавление сервиса в IoC container
     @inject(TYPES.ILogger) private _logger: ILoggerService, // @inject импортирует в конструктор экзмепляр сервиса}
     @inject(TYPES.IExeptionFilter) private _exeptionFilter: IExeptionFilter,
     @inject(TYPES.IUserController) private _userController: IUserController,
+    @inject(TYPES.IConfigService) private _configService: IConfigService,
   ) {
     this._app = express();
     this._port = 8000;
