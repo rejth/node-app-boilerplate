@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
 import { Server } from 'http';
-import {json} from 'body-parser';
+import { json } from 'body-parser';
 import 'reflect-metadata';
 
 import { TYPES } from './types';
@@ -9,6 +9,7 @@ import { ILoggerService } from './logger/ILoggerService';
 import { IExeptionFilter } from './errors/IExeptionFilter';
 import { IUserController } from './users/interfaces/IUserController';
 import { IConfigService } from './config/IConfigService';
+import { IPrismaService } from './database/IPrismaService';
 
 @injectable()
 export class App { // добавление сервиса в IoC container
@@ -17,10 +18,11 @@ export class App { // добавление сервиса в IoC container
   server: Server;
 
   constructor(
-    @inject(TYPES.ILogger) private _logger: ILoggerService, // @inject импортирует в конструктор экзмепляр сервиса}
+    @inject(TYPES.ILogger) private _logger: ILoggerService, // @inject импортирует в конструктор экзмепляр сервиса
     @inject(TYPES.IExeptionFilter) private _exeptionFilter: IExeptionFilter,
     @inject(TYPES.IUserController) private _userController: IUserController,
     @inject(TYPES.IConfigService) private _configService: IConfigService,
+    @inject(TYPES.IPrismaService) private _prismaService: IPrismaService,
   ) {
     this._app = express();
     this._port = 8000;
@@ -38,10 +40,12 @@ export class App { // добавление сервиса в IoC container
     this._app.use(this._exeptionFilter.catch.bind(this._exeptionFilter));
   }
 
-  async init(): Promise<void> {
+  public async init(): Promise<void> {
     this.useMiddleware();
     this.useRoutes();
     this.useExeptionFilters();
+    await this._prismaService.connect();
+
     this.server = this._app.listen(this._port);
     this._logger.log(`Server starts up on port http://localhost:${this._port}`);
   }

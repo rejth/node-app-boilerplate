@@ -6,13 +6,16 @@ import { IExeptionFilter } from "./errors/IExeptionFilter";
 import { IUserController } from "./users/interfaces/IUserController";
 import { IUserService } from "./users/interfaces/IUsersService";
 import { IConfigService } from "./config/IConfigService";
+import { IPrismaService } from './database/IPrismaService';
 
-import { App } from "./app";
 import { UserController } from './users/users.controller';
 import { ExeptionFilter } from "./errors/exeption.filter";
 import { LoggerService } from "./logger/logger.service";
 import { UserService } from "./users/users.service";
 import { ConfigService } from "./config/config.service";
+import { PrismaService } from "./database/prisma.service";
+
+import { App } from "./app";
 
 export interface IBootstrapReturn {
   appContainer: Container;
@@ -26,6 +29,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
   bind<IExeptionFilter>(TYPES.IExeptionFilter).to(ExeptionFilter);
   bind<ILoggerService>(TYPES.ILogger).to(LoggerService).inSingletonScope();
   bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
+  bind<IPrismaService>(TYPES.IPrismaService).to(PrismaService).inSingletonScope();
 });
 
 async function bootstrap(): Promise<IBootstrapReturn> {

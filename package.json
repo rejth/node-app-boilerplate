@@ -8,9 +8,12 @@
     "start": "node ./dist/main.js",
     "dev": "npx nodemon",
     "dev:inspect": "npx nodemon -e ts,json --exec node --inspect=localhost:9229 -r ts-node/register src/main.ts",
+    "generate": "npx prisma generate",
     "build": "tsc",
     "lint": "eslint ./src/**",
     "lint:fix": "eslint ./src/** --fix",
+    "check-updates": "npx npm-check-updates",
+    "update-packages": "npx npm-check-updates -u",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -19,25 +22,26 @@
   "author": "Ilya Kirsanov",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^3.9.1",
+    "@prisma/client": "^4.1.0",
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.1",
+    "body-parser": "^1.20.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
     "inversify": "^6.0.1",
     "reflect-metadata": "^0.1.13",
-    "tslog": "^3.3.1"
+    "tslog": "^3.3.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.13",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
-    "eslint": "^8.7.0",
-    "nodemon": "^2.0.15",
-    "prisma": "^3.9.1",
-    "ts-node": "^10.4.0"
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
+    "eslint": "^8.20.0",
+    "nodemon": "^2.0.19",
+    "npm-check-updates": "^16.0.0",
+    "prisma": "^4.1.0",
+    "ts-node": "^10.9.1"
   }
 }
