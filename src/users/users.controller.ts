@@ -21,7 +21,7 @@ export class UserController extends BaseController implements IUserController {
       path: '/login',
       method: 'post',
       callback: this.login,
-      middlewares: [],
+      middlewares: [new ValidateMiddleware(UserLoginDto)],
     },
     {
       path: '/register',
@@ -39,17 +39,17 @@ export class UserController extends BaseController implements IUserController {
     this.bindRoutes(this.routes);
   }
 
-  login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
-    next(new HttpError(401, 'Authorization error', 'Login'));
+  async login({ body }: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): Promise<void> {
+    const result = await this._userService.loginUser(body);
+
+    if (!result) return next(new HttpError(401, 'Authorization error', 'Login'))
+    this.success(res, 'Authorization is successful');
   }
 
   async register({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): Promise<void> {
     const result = await this._userService.createUser(body);
 
-    if (!result) {
-      return next(new HttpError(422, 'User already exists!'))
-    }
-
-    this.success(res, 'Register is successful!');
+    if (!result) return next(new HttpError(422, 'User already exists', 'Register'))
+    this.success(res, 'Registration is successful');
   }
 }

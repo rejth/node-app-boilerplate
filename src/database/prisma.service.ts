@@ -1,5 +1,6 @@
 import { PrismaClient, UserModel } from "@prisma/client";
 import { inject, injectable } from "inversify";
+import 'reflect-metadata';
 
 import { ILoggerService } from "../logger/ILoggerService";
 import { IPrismaService } from './IPrismaService';
@@ -7,13 +8,13 @@ import { TYPES } from "../types";
 
 @injectable()
 export class PrismaService implements IPrismaService {
-  client: PrismaClient;
+  public client: PrismaClient;
 
   constructor(@inject(TYPES.ILogger) private _logger: ILoggerService) {
     this.client = new PrismaClient();
   }
 
-  async connect(): Promise<void> {
+  public async connect(): Promise<void> {
     try {
       await this.client.$connect();
       this._logger.log(`[PrismaService] Successfuly connected to database`);
@@ -24,7 +25,7 @@ export class PrismaService implements IPrismaService {
     }
   }
 
-  async disconnect(): Promise<void> {
+  public async disconnect(): Promise<void> {
     await this.client.$disconnect();
     this._logger.log(`[PrismaService] Successfuly disconnected from database`);
   }
