@@ -18,20 +18,20 @@ export abstract class BaseController {
     return this._router;
   }
 
-  created(res: Response): ExpressReturnType {
+  public created(res: Response): ExpressReturnType {
     return res.sendStatus(201);
   }
 
-  send<T>(res: Response, code: number, message: T): ExpressReturnType {
+  public send<T>(res: Response, code: number, message: T): ExpressReturnType {
     res.type('application/json');
     return res.status(code).json(message);
   }
 
-  success<T>(res: Response, message: T): ExpressReturnType {
+  public success<T>(res: Response, message: T): ExpressReturnType {
     return this.send<T>(res, 200, message);
   }
 
-  error<T>(res: Response, message: T): ExpressReturnType {
+  public error<T>(res: Response, message: T): ExpressReturnType {
     return this.send<T>(res, 500, message);
   }
 

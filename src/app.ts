@@ -7,12 +7,14 @@ import 'reflect-metadata';
 import { TYPES } from './types';
 import { ILoggerService } from './logger/ILoggerService';
 import { IExeptionFilter } from './errors/IExeptionFilter';
+import { AuthMiddleware } from './common/auth.middleware';
 import { IUserController } from './users/interfaces/IUserController';
 import { IConfigService } from './config/IConfigService';
 import { IPrismaService } from './database/IPrismaService';
 
+
 @injectable()
-export class App { // добавление сервиса в IoC container
+export class App {
   private readonly _app: Express;
   private readonly _port: number;
   server: Server;
@@ -30,10 +32,12 @@ export class App { // добавление сервиса в IoC container
 
   useMiddleware(): void {
     this._app.use(json());
+    const authMiddleware = new AuthMiddleware(this._configService.getConfig<string>('SECRET'));
+    this._app.use(authMiddleware.execute.bind(authMiddleware));
   }
 
   useRoutes(): void {
-    this._app.use('/users', this._userController.router);
+    this._app.use('/auth', this._userController.router);
   }
 
   useExeptionFilters(): void {

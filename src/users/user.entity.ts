@@ -20,10 +20,7 @@ export class User {
     return this._password;
   }
 
-  public comparePasswords(
-    pass: string, 
-    hash: string, 
-    cb: (e: Error, isMatch: boolean) => void): Promise<boolean> {
+  public comparePasswords(pass: string, hash: string): Promise<boolean> {
     return compare(pass, hash)
   }
 

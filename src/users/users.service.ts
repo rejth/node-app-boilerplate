@@ -20,7 +20,7 @@ export class UserService implements IUserService {
     @inject(TYPES.IUserRepository) private _userRepository: IUserRepository,
   ) {}
 
-  async createUser({ email, name, password }: UserRegisterDto): Promise<UserModel | null> {
+  public async createUser({ email, name, password }: UserRegisterDto): Promise<UserModel | null> {
     const newUser = new User(email, name)
     const salt = this._configService.getConfig<string>('SALT');
     await newUser.setPassword(password, Number(salt));
@@ -30,17 +30,11 @@ export class UserService implements IUserService {
     return this._userRepository.create(newUser);
   }
 
-  async loginUser({ email, password }: UserLoginDto): Promise<boolean> {
+  public async loginUser({ email, password }: UserLoginDto): Promise<boolean> {
     const existedUser = await this._userRepository.find(email);
     if (!existedUser) return false;
 
     const newUser = new User(existedUser.email, existedUser.name)
-    return newUser.comparePasswords(password, existedUser.password, (e, isMatch) => {
-      if (!e && isMatch) return true;
-      if (!isMatch) {
-        this._logger.error(`[UserService] Authorization error. Password doesn't match!`);
-        return false;
-      }
-    });
+    return newUser.comparePasswords(password, existedUser.password);
   }
 }

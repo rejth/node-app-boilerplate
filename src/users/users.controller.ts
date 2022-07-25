@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { inject, injectable } from "inversify";
+import { sign } from 'jsonwebtoken';
 import 'reflect-metadata';
 
 import { TYPES } from "../types";
@@ -13,6 +14,7 @@ import { BaseController } from '../common/base.controller';
 import { HttpError } from "../errors/http-error";
 import { UserLoginDto } from "./dto/user-login.dto";
 import { UserRegisterDto } from "./dto/user-register.dto";
+import { IConfigService } from "../config/IConfigService";
 
 @injectable()
 export class UserController extends BaseController implements IUserController {
@@ -28,10 +30,17 @@ export class UserController extends BaseController implements IUserController {
       method: 'post',
       callback: this.register,
       middlewares: [new ValidateMiddleware(UserRegisterDto)],
+    },
+    {
+      path: '/info',
+      method: 'get',
+      callback: this.info,
+      middlewares: [],
     }
   ];
 
   constructor(
+    @inject(TYPES.IConfigService) private _configService: IConfigService,
     @inject(TYPES.ILogger) private _logger: ILoggerService,
     @inject(TYPES.IUserService) private _userService: IUserService,
   ) {
@@ -39,17 +48,38 @@ export class UserController extends BaseController implements IUserController {
     this.bindRoutes(this.routes);
   }
 
-  async login({ body }: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): Promise<void> {
+  public async login({ body }: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): Promise<void> {
     const result = await this._userService.loginUser(body);
-
     if (!result) return next(new HttpError(401, 'Authorization error', 'Login'))
-    this.success(res, 'Authorization is successful');
+
+    const jwt = await this.signJWT(body.email, this._configService.getConfig('SECRET'));
+    this.success(res, { jwt });
   }
 
-  async register({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): Promise<void> {
+  public async register({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): Promise<void> {
     const result = await this._userService.createUser(body);
-
     if (!result) return next(new HttpError(422, 'User already exists', 'Register'))
+
     this.success(res, 'Registration is successful');
+  }
+
+  public async info({ user }: Request, res: Response): Promise<void> {
+    this.success(res, { email: user });
+  }
+
+  private signJWT(email: string, secret: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      sign({
+        email,
+        iat: Math.floor(Date.now() / 1000),
+      }, 
+      secret,
+      { algorithm: 'HS256' },
+      (e, token) => {
+        if (e) reject(e);
+        resolve(token as string);
+      },
+      )
+    })
   }
 }
