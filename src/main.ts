@@ -1,7 +1,7 @@
 import { Container, ContainerModule, interfaces } from "inversify";
 import 'reflect-metadata';
 
-// Interfaces
+/** Interfaces */
 import { TYPES } from "./types";
 import { ILoggerService } from "./logger/ILoggerService";
 import { IExeptionFilter } from "./errors/IExeptionFilter";
@@ -11,13 +11,13 @@ import { IUserRepository } from "./entities/users/interfaces/IUserRepository";
 import { IConfigService } from "./config/IConfigService";
 import { IPrismaService } from './database/IPrismaService';
 
-// Utils
+/** Utils */
 import { ConfigService } from "./config/config.service";
 import { PrismaService } from "./database/prisma.service";
 import { ExeptionFilter } from "./errors/exeption.filter";
 import { LoggerService } from "./logger/logger.service";
 
-// Entities
+/** Entities */
 import { UserController } from './entities/users/users.controller';
 import { UserService } from "./entities/users/users.service";
 import { UserRepository } from "./entities/users/users.repository";
