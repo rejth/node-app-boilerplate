@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { inject, injectable } from "inversify";
 import { sign } from 'jsonwebtoken';
-import 'reflect-metadata';
 
 import { TYPES } from "../types";
 import { IControllerRoute } from "../common/interfaces/IControllerRoute";

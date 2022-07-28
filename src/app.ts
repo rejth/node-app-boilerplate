@@ -2,7 +2,6 @@ import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
 import { Server } from 'http';
 import { json } from 'body-parser';
-import 'reflect-metadata';
 
 import { TYPES } from './types';
 import { ILoggerService } from './logger/ILoggerService';

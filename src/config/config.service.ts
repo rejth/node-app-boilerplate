@@ -1,6 +1,5 @@
 import { inject, injectable } from "inversify";
 import { config, DotenvConfigOutput, DotenvParseOutput } from 'dotenv';
-import 'reflect-metadata';
 
 import { IConfigService } from "./IConfigService";
 import { ILoggerService } from "../logger/ILoggerService";

@@ -1,4 +1,5 @@
 import { Container, ContainerModule, interfaces } from "inversify";
+import 'reflect-metadata';
 
 // Interfaces
 import { TYPES } from "./types";

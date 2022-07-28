@@ -1,6 +1,5 @@
 import { Response, Router } from 'express';
 import { injectable } from 'inversify';
-import 'reflect-metadata';
 
 import { ExpressReturnType, IControllerRoute } from "./interfaces/IControllerRoute";
 import { IMiddleware } from './interfaces/IMiddleware';

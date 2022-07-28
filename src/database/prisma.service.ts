@@ -1,6 +1,5 @@
-import { PrismaClient, UserModel } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { inject, injectable } from "inversify";
-import 'reflect-metadata';
 
 import { ILoggerService } from "../logger/ILoggerService";
 import { IPrismaService } from './IPrismaService';

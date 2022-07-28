@@ -1,6 +1,5 @@
 import { inject, injectable } from "inversify";
 import { UserModel } from "@prisma/client";
-import 'reflect-metadata';
 
 import { TYPES } from "../types";
 import { IUserService } from "./interfaces/IUsersService";

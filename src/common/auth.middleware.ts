@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
-import 'reflect-metadata';
 
 import { IMiddleware } from "./interfaces/IMiddleware";
 
