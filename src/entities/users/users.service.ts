@@ -1,15 +1,15 @@
 import { inject, injectable } from "inversify";
 import { UserModel } from "@prisma/client";
 
-import { TYPES } from "../types";
+import { TYPES } from "../../types";
 import { IUserService } from "./interfaces/IUsersService";
-import { IConfigService } from "../config/IConfigService";
+import { IConfigService } from "../../config/IConfigService";
 import { IUserRepository } from "./interfaces/IUserRepository";
 
 import { User } from "./user.entity";
 import { UserLoginDto } from "./dto/user-login.dto";
 import { UserRegisterDto } from "./dto/user-register.dto";
-import { ILoggerService } from "../logger/ILoggerService";
+import { ILoggerService } from "../../logger/ILoggerService";
 
 @injectable()
 export class UserService implements IUserService {
@@ -22,7 +22,7 @@ export class UserService implements IUserService {
   public async createUser({ email, name, password }: UserRegisterDto): Promise<UserModel | null> {
     const newUser = new User(email, name)
     const salt = this._configService.getConfig<string>('SALT');
-    await newUser.setPassword(password, Number(salt));
+    await newUser.hashPassword(password, Number(salt));
 
     const existedUser = await this._userRepository.find(email);
     if (existedUser) return null;
@@ -35,5 +35,12 @@ export class UserService implements IUserService {
 
     const newUser = new User(existedUser.email, existedUser.name)
     return newUser.comparePasswords(password, existedUser.password);
+  }
+
+  public async getUserInfo(email: string): Promise<Omit<UserModel, 'password'> | null> {
+    const existedUser = await this._userRepository.find(email);
+    if (!existedUser) return null;
+    const { password, ...data } = existedUser;
+    return data;
   }
 }

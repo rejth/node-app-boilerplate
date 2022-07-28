@@ -2,18 +2,20 @@ import { Request, Response, NextFunction } from "express";
 import { inject, injectable } from "inversify";
 import { sign } from 'jsonwebtoken';
 
-import { TYPES } from "../types";
-import { IControllerRoute } from "../common/interfaces/IControllerRoute";
-import { ILoggerService } from "../logger/ILoggerService";
+import { TYPES } from "../../types";
+import { IControllerRoute } from "../../common/interfaces/IControllerRoute";
+import { ILoggerService } from "../../logger/ILoggerService";
 import { IUserController } from "./interfaces/IUserController";
 import { IUserService } from "./interfaces/IUsersService";
 
-import { ValidateMiddleware } from "../common/validate.middleware";
-import { BaseController } from '../common/base.controller';
-import { HttpError } from "../errors/http-error";
+import { ValidateMiddleware } from "../../common/middlewares/validate.middleware";
+import { BaseController } from '../../common/base.controller';
+import { AuthGuard } from "../../common/guards/auth.guard";
+
+import { IConfigService } from "../../config/IConfigService";
+import { HttpError } from "../../errors/http-error";
 import { UserLoginDto } from "./dto/user-login.dto";
 import { UserRegisterDto } from "./dto/user-register.dto";
-import { IConfigService } from "../config/IConfigService";
 
 @injectable()
 export class UserController extends BaseController implements IUserController {
@@ -34,7 +36,7 @@ export class UserController extends BaseController implements IUserController {
       path: '/info',
       method: 'get',
       callback: this.info,
-      middlewares: [],
+      middlewares: [new AuthGuard()],
     }
   ];
 
@@ -52,18 +54,21 @@ export class UserController extends BaseController implements IUserController {
     if (!result) return next(new HttpError(401, 'Authorization error', 'Login'))
 
     const jwt = await this.signJWT(body.email, this._configService.getConfig('SECRET'));
-    this.success(res, { jwt });
+    this.success(res, { accessToken: jwt });
   }
 
   public async register({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): Promise<void> {
     const result = await this._userService.createUser(body);
     if (!result) return next(new HttpError(422, 'User already exists', 'Register'))
 
-    this.success(res, 'Registration is successful');
+    this.success(res, result);
   }
 
-  public async info({ user }: Request, res: Response): Promise<void> {
-    this.success(res, { email: user });
+  public async info({ email }: Request, res: Response, next: NextFunction): Promise<void> {
+    const result = await this._userService.getUserInfo(email);
+    if (!result) return next(new HttpError(401, 'Authorization error', 'Info'))
+
+    this.success(res, result);
   }
 
   private signJWT(email: string, secret: string): Promise<string> {

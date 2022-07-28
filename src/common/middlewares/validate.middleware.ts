@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { ClassConstructor, plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 
-import { IMiddleware } from "./interfaces/IMiddleware";
+import { IMiddleware } from "../interfaces/IMiddleware";
 
 export class ValidateMiddleware implements IMiddleware {
   constructor(private _classToValidate: ClassConstructor<object>) {}

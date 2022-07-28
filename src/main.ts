@@ -5,9 +5,9 @@ import 'reflect-metadata';
 import { TYPES } from "./types";
 import { ILoggerService } from "./logger/ILoggerService";
 import { IExeptionFilter } from "./errors/IExeptionFilter";
-import { IUserController } from "./users/interfaces/IUserController";
-import { IUserService } from "./users/interfaces/IUsersService";
-import { IUserRepository } from "./users/interfaces/IUserRepository";
+import { IUserController } from "./entities/users/interfaces/IUserController";
+import { IUserService } from "./entities/users/interfaces/IUsersService";
+import { IUserRepository } from "./entities/users/interfaces/IUserRepository";
 import { IConfigService } from "./config/IConfigService";
 import { IPrismaService } from './database/IPrismaService';
 
@@ -18,9 +18,9 @@ import { ExeptionFilter } from "./errors/exeption.filter";
 import { LoggerService } from "./logger/logger.service";
 
 // Entities
-import { UserController } from './users/users.controller';
-import { UserService } from "./users/users.service";
-import { UserRepository } from "./users/users.repository";
+import { UserController } from './entities/users/users.controller';
+import { UserService } from "./entities/users/users.service";
+import { UserRepository } from "./entities/users/users.repository";
 
 import { App } from "./app";
 
@@ -29,8 +29,9 @@ export interface IBootstrapReturn {
   app: App;
 }
 
+  /** Inversion of control container */
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-  bind<App>(TYPES.Application).to(App); // реализация DI через inversify
+  bind<App>(TYPES.Application).to(App);
   bind<IUserController>(TYPES.IUserController).to(UserController);
   bind<IUserService>(TYPES.IUserService).to(UserService);
   bind<IExeptionFilter>(TYPES.IExeptionFilter).to(ExeptionFilter);

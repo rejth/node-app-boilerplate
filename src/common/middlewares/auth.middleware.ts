@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 
-import { IMiddleware } from "./interfaces/IMiddleware";
+import { IMiddleware } from "../interfaces/IMiddleware";
 
 export class AuthMiddleware implements IMiddleware {
   constructor(private _secret: string) {}
@@ -25,7 +25,7 @@ export class AuthMiddleware implements IMiddleware {
       const accessToken = req.headers.authorization.split(' ')[1];
       const data = await this.verifyToken(req, accessToken, next)
       if (data) {
-        req.user = data;
+        req.email = data;
         next();
       }
     }

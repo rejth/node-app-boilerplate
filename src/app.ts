@@ -6,8 +6,8 @@ import { json } from 'body-parser';
 import { TYPES } from './types';
 import { ILoggerService } from './logger/ILoggerService';
 import { IExeptionFilter } from './errors/IExeptionFilter';
-import { AuthMiddleware } from './common/auth.middleware';
-import { IUserController } from './users/interfaces/IUserController';
+import { AuthMiddleware } from './common/middlewares/auth.middleware';
+import { IUserController } from './entities/users/interfaces/IUserController';
 import { IConfigService } from './config/IConfigService';
 import { IPrismaService } from './database/IPrismaService';
 
