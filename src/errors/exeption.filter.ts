@@ -9,7 +9,7 @@ import { HttpError } from "./http-error";
 
 @injectable()
 export class ExeptionFilter implements IExeptionFilter {
-  constructor(@inject(TYPES.ILogger) private _logger: ILoggerService) { }
+  constructor(@inject(TYPES.Logger) private _logger: ILoggerService) { }
 
   catch(err: Error | HttpError, req: Request, res: Response, next: NextFunction): void {
     if (err instanceof HttpError) {

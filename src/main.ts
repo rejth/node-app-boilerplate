@@ -1,5 +1,5 @@
-import { Container, ContainerModule, interfaces } from "inversify";
 import 'reflect-metadata';
+import { Container, ContainerModule, interfaces } from "inversify";
 
 /** Interfaces */
 import { TYPES } from "./types";
@@ -32,13 +32,13 @@ export interface IBootstrapReturn {
   /** Inversion of control container */
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
   bind<App>(TYPES.Application).to(App);
-  bind<IUserController>(TYPES.IUserController).to(UserController);
-  bind<IUserService>(TYPES.IUserService).to(UserService);
-  bind<IExeptionFilter>(TYPES.IExeptionFilter).to(ExeptionFilter);
-  bind<ILoggerService>(TYPES.ILogger).to(LoggerService).inSingletonScope();
-  bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
-  bind<IPrismaService>(TYPES.IPrismaService).to(PrismaService).inSingletonScope();
-  bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository).inSingletonScope();
+  bind<IUserController>(TYPES.UserController).to(UserController);
+  bind<IUserService>(TYPES.UserService).to(UserService);
+  bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
+  bind<ILoggerService>(TYPES.Logger).to(LoggerService).inSingletonScope();
+  bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
+  bind<IPrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
+  bind<IUserRepository>(TYPES.UserRepository).to(UserRepository).inSingletonScope();
 });
 
 async function bootstrap(): Promise<IBootstrapReturn> {

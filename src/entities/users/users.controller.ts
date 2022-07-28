@@ -41,9 +41,9 @@ export class UserController extends BaseController implements IUserController {
   ];
 
   constructor(
-    @inject(TYPES.IConfigService) private _configService: IConfigService,
-    @inject(TYPES.ILogger) private _logger: ILoggerService,
-    @inject(TYPES.IUserService) private _userService: IUserService,
+    @inject(TYPES.ConfigService) private _configService: IConfigService,
+    @inject(TYPES.Logger) private _logger: ILoggerService,
+    @inject(TYPES.UserService) private _userService: IUserService,
   ) {
     super(_logger);
     this.bindRoutes(this.routes);

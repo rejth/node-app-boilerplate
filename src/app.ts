@@ -19,11 +19,11 @@ export class App {
   server: Server;
 
   constructor(
-    @inject(TYPES.ILogger) private _logger: ILoggerService, // @inject импортирует в конструктор экзмепляр сервиса
-    @inject(TYPES.IExeptionFilter) private _exeptionFilter: IExeptionFilter,
-    @inject(TYPES.IUserController) private _userController: IUserController,
-    @inject(TYPES.IConfigService) private _configService: IConfigService,
-    @inject(TYPES.IPrismaService) private _prismaService: IPrismaService,
+    @inject(TYPES.Logger) private _logger: ILoggerService, // @inject импортирует в конструктор экзмепляр сервиса
+    @inject(TYPES.ExeptionFilter) private _exeptionFilter: IExeptionFilter,
+    @inject(TYPES.UserController) private _userController: IUserController,
+    @inject(TYPES.ConfigService) private _configService: IConfigService,
+    @inject(TYPES.PrismaService) private _prismaService: IPrismaService,
   ) {
     this._app = express();
     this._port = 8000;

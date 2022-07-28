@@ -5,16 +5,16 @@
   "main": "./dist/main.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node ./dist/main.js",
+    "build": "tsc",
+    "prod": "node ./dist/main.js",
     "dev": "npx nodemon",
     "dev:inspect": "npx nodemon -e ts,json --exec node --inspect=localhost:9229 -r ts-node/register src/main.ts",
-    "generate": "npx prisma generate",
-    "build": "tsc",
+    "test": "jest --runInBand --detectOpenHandles --colors",
     "lint": "eslint ./src/**",
     "lint:fix": "eslint ./src/** --fix",
     "check-updates": "npx npm-check-updates",
     "update-packages": "npx npm-check-updates -u",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "generate": "npx prisma generate"
   },
   "keywords": [
     "node"
@@ -37,14 +37,17 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.13",
+    "@types/jest": "^28.1.6",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^18.6.2",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
     "eslint": "^8.20.0",
+    "jest": "^28.1.3",
     "nodemon": "^2.0.19",
     "npm-check-updates": "^16.0.0",
     "prisma": "^4.1.0",
+    "ts-jest": "^28.0.7",
     "ts-node": "^10.9.1"
   }
 }

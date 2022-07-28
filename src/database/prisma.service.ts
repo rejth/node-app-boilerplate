@@ -9,7 +9,7 @@ import { TYPES } from "../types";
 export class PrismaService implements IPrismaService {
   public client: PrismaClient;
 
-  constructor(@inject(TYPES.ILogger) private _logger: ILoggerService) {
+  constructor(@inject(TYPES.Logger) private _logger: ILoggerService) {
     this.client = new PrismaClient();
   }
 

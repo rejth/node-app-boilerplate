@@ -9,14 +9,12 @@ import { IUserRepository } from "./interfaces/IUserRepository";
 import { User } from "./user.entity";
 import { UserLoginDto } from "./dto/user-login.dto";
 import { UserRegisterDto } from "./dto/user-register.dto";
-import { ILoggerService } from "../../logger/ILoggerService";
 
 @injectable()
 export class UserService implements IUserService {
   constructor(
-    @inject(TYPES.IConfigService) private _configService: IConfigService,
-    @inject(TYPES.ILogger) private _logger: ILoggerService,
-    @inject(TYPES.IUserRepository) private _userRepository: IUserRepository,
+    @inject(TYPES.ConfigService) private _configService: IConfigService,
+    @inject(TYPES.UserRepository) private _userRepository: IUserRepository,
   ) {}
 
   public async createUser({ email, name, password }: UserRegisterDto): Promise<UserModel | null> {
