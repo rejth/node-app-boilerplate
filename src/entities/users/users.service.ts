@@ -17,6 +17,14 @@ export class UserService implements IUserService {
     @inject(TYPES.UserRepository) private _userRepository: IUserRepository,
   ) {}
 
+  public async loginUser({ email, password }: UserLoginDto): Promise<boolean> {
+    const existedUser = await this._userRepository.find(email);
+    if (!existedUser) return false;
+
+    const newUser = new User(existedUser.email, existedUser.name)
+    return newUser.comparePasswords(password, existedUser.password);
+  }
+
   public async createUser({ email, name, password }: UserRegisterDto): Promise<UserModel | null> {
     const newUser = new User(email, name)
     const salt = this._configService.getConfig<string>('SALT');
@@ -25,14 +33,6 @@ export class UserService implements IUserService {
     const existedUser = await this._userRepository.find(email);
     if (existedUser) return null;
     return this._userRepository.create(newUser);
-  }
-
-  public async loginUser({ email, password }: UserLoginDto): Promise<boolean> {
-    const existedUser = await this._userRepository.find(email);
-    if (!existedUser) return false;
-
-    const newUser = new User(existedUser.email, existedUser.name)
-    return newUser.comparePasswords(password, existedUser.password);
   }
 
   public async getUserInfo(email: string): Promise<Omit<UserModel, 'password'> | null> {

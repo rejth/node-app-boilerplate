@@ -1,6 +1,5 @@
 import { UserModel } from "@prisma/client";
 import { inject, injectable } from "inversify";
-import 'reflect-metadata';
 
 import { TYPES } from "../../types";
 import { IPrismaService } from "../../database/IPrismaService";

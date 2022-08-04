@@ -9,7 +9,8 @@
     "prod": "node ./dist/main.js",
     "dev": "npx nodemon",
     "dev:inspect": "npx nodemon -e ts,json --exec node --inspect=localhost:9229 -r ts-node/register src/main.ts",
-    "test": "jest --runInBand --detectOpenHandles --colors",
+    "test:unit": "jest --runInBand --detectOpenHandles --colors --config jest.config.ts",
+    "test:e2e": "jest --runInBand --colors --config jest.e2e.config.ts",
     "lint": "eslint ./src/**",
     "lint:fix": "eslint ./src/** --fix",
     "check-updates": "npx npm-check-updates",
@@ -40,6 +41,7 @@
     "@types/jest": "^28.1.6",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^18.6.2",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
     "eslint": "^8.20.0",
@@ -47,6 +49,7 @@
     "nodemon": "^2.0.19",
     "npm-check-updates": "^16.0.0",
     "prisma": "^4.1.0",
+    "supertest": "^6.2.4",
     "ts-jest": "^28.0.7",
     "ts-node": "^10.9.1"
   }

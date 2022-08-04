@@ -14,9 +14,9 @@ import { IPrismaService } from './database/IPrismaService';
 
 @injectable()
 export class App {
-  private readonly _app: Express;
-  private readonly _port: number;
+  app: Express;
   server: Server;
+  port: number;
 
   constructor(
     @inject(TYPES.Logger) private _logger: ILoggerService, // @inject импортирует в конструктор экзмепляр сервиса
@@ -25,22 +25,22 @@ export class App {
     @inject(TYPES.ConfigService) private _configService: IConfigService,
     @inject(TYPES.PrismaService) private _prismaService: IPrismaService,
   ) {
-    this._app = express();
-    this._port = 8000;
+    this.app = express();
+    this.port = 8000;
   }
 
   useMiddleware(): void {
-    this._app.use(json());
+    this.app.use(json());
     const authMiddleware = new AuthMiddleware(this._configService.getConfig<string>('SECRET'));
-    this._app.use(authMiddleware.execute.bind(authMiddleware));
+    this.app.use(authMiddleware.execute.bind(authMiddleware));
   }
 
   useRoutes(): void {
-    this._app.use('/auth', this._userController.router);
+    this.app.use('/auth', this._userController.router);
   }
 
   useExeptionFilters(): void {
-    this._app.use(this._exeptionFilter.catch.bind(this._exeptionFilter));
+    this.app.use(this._exeptionFilter.catch.bind(this._exeptionFilter));
   }
 
   public async init(): Promise<void> {
@@ -49,7 +49,11 @@ export class App {
     this.useExeptionFilters();
     await this._prismaService.connect();
 
-    this.server = this._app.listen(this._port);
-    this._logger.log(`Server starts up on port http://localhost:${this._port}`);
+    this.server = this.app.listen(this.port);
+    this._logger.log(`Server starts up on port http://localhost:${this.port}`);
+  }
+
+  public close(): void {
+    this.server.close();
   }
 }
