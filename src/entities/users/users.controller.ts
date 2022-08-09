@@ -59,7 +59,7 @@ export class UserController extends BaseController implements IUserController {
 
   public async register({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): Promise<void> {
     const result = await this._userService.createUser(body);
-    if (!result) return next(new HttpError(422, 'User already exists', 'Register'))
+    if (!result) return next(new HttpError(422, 'Registration error', 'Register'))
 
     this.success(res, result);
   }

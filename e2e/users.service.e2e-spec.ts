@@ -18,16 +18,70 @@ beforeAll(async () => {
   testUser = JSON.parse(await readFile('user.json'));
 })
 
-afterAll(() => {
+afterAll(async () => {
   application.close();
 })
 
 describe('User Service', () => {
+  it('Register: success', async () => {
+    const result = await request(application.app)
+      .post('/auth/register')
+      .send({
+        name: `Test user ${Math.random() * 1000}`,
+        email: `${Math.random() * 1000}@mail.ru`,
+        password: "password"
+      });
+
+    expect(result.statusCode).toBe(200);
+  });
+
   it('Register: error', async () => {
     const result = await request(application.app)
       .post('/auth/register')
-      .send(testUser);
+      .send({
+        name: "User without email",
+        password: "password_1"
+      });
 
     expect(result.statusCode).toBe(422);
+  });
+
+  it('Log in: success', async () => {
+    const result = await request(application.app)
+      .post('/auth/login')
+      .send(testUser);
+
+    expect(result.statusCode).toBe(200);
+    expect(result.body.accessToken).not.toBeUndefined();
+  });
+
+  it('Log in: error', async () => {
+    const result = await request(application.app)
+      .post('/auth/login')
+      .send({ email: "new@mail.ru", password: "wrong-password" });
+
+    expect(result.statusCode).toBe(401);
+  });
+
+  it('Get user info: success', async () => {
+    const login = await request(application.app)
+      .post('/auth/login')
+      .send(testUser);
+
+    const result = await request(application.app)
+      .get('/auth/info')
+      .set('Authorization', `Bearer ${login.body.accessToken}`)
+
+    expect(result.statusCode).toBe(200);
+    expect(result.body.id).not.toBeUndefined();
+    expect(result.body.email).toBe(testUser.email);
+  });
+
+  it('Get user info: error', async () => {
+    const result = await request(application.app)
+      .get('/auth/info')
+      .set({ authorization: 'wrong token' });
+
+    expect(result.statusCode).toBe(401);
   })
 })

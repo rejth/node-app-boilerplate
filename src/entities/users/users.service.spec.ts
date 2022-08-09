@@ -64,7 +64,7 @@ describe('User Service', () => {
       password: expect.any(String),
       id: expect.any(Number),
     }));
-  })
+  });
 
   it('loginUser: correct credentials', async () => {
     configService.getConfig = jest.fn().mockReturnValueOnce(1);
@@ -84,7 +84,7 @@ describe('User Service', () => {
     });
     
     expect(isValidUser).toBeTruthy();
-  })
+  });
 
   it('loginUser: wrong credentials', async () => {
     configService.getConfig = jest.fn().mockReturnValueOnce(1);
@@ -104,7 +104,7 @@ describe('User Service', () => {
     });
     
     expect(isValidUser).toBeFalsy();
-  })
+  });
 
   it('loginUser: user does not exist', async () => {
     usersRepository.find = jest.fn().mockReturnValueOnce(null);
