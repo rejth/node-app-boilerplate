@@ -6,10 +6,10 @@
   * Reflect-metadata
   * Inversify
 
-## 🛠 Database:
+## 📚 Database:
   * Prisma
   
-## 🛠 Test:
+## 🧪 Test:
   * Jest
   * Supertest
 
