@@ -4,6 +4,7 @@ dist
 dist-ssr
 *.local
 /.clinic
+coverage
 
 src/test-decorators.ts
 src/test-reflect-metadata.ts
